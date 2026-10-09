@@ -4,18 +4,20 @@
 
 ## 本次演示记录
 
-本节记录 2026-10-09（Asia/Shanghai）编辑本文时的状态，不代表后续环节已经完成。
+本节更新于 2026-10-10（Asia/Shanghai）。历史演示、当前授权和原生触发分别记录，不以其中一步代替全部流程。
 
 - 仓库：[chat-codex-handoff-demo-20261009](https://github.com/yujiacheng671/chat-codex-handoff-demo-20261009)，独立纯文档演示；基线为 `84736a95fd6781263a5181d8817adec9f60e4a57`。
-- 任务：[Issue #1](https://github.com/yujiacheng671/chat-codex-handoff-demo-20261009/issues/1)。当前 GitHub 连接创建文件和 Issue 均返回 403，本 Issue 由 Codex 经用户已登录的 GitHub 网页创建。普通 Chat 创建 Issue 尚未验证成功。
+- 首次任务：[Issue #1](https://github.com/yujiacheng671/chat-codex-handoff-demo-20261009/issues/1)。2026-10-09 的 GitHub 连接写入返回 403，因此该 Issue 由 Codex 经用户已登录的 GitHub 网页创建。
 - 当前 Codex 已通过 GitHub 只读工具读取 Issue #1，并依其要求在本地独立分支 `codex/handoff-demo` 实施，只新增任务模板与本文。这次执行由当前 Codex 会话分派启动，不能算作 Issue 自动触发。
-- 草稿 PR 发布、真实远端提交检查及普通 Chat 对 PR 的独立复核均待完成；不得将本文或 Codex 自审作为已打通闭环的证据。后续结果应记录在 Issue/PR，检查须对应发布后的实际提交 SHA。
+- 已发布[草稿 PR #2](https://github.com/yujiacheng671/chat-codex-handoff-demo-20261009/pull/2)，并在 [Issue 评论](https://github.com/yujiacheng671/chat-codex-handoff-demo-20261009/issues/1#issuecomment-6065067681)回填链接。2026-10-09 的远端提交为 `5c703bff66e6fa9e339d9def9aabcb27a0eb1bda`，两文件共新增 88 行；Codex 对该提交检查文件范围及 `git diff --check`，均通过。后续修订须检查其新的实际提交，不能沿用此结果。
+- 2026-10-10 已从登录后的浏览器读到原普通 Chat 的独立审阅正文。Chat 实际读取 Issue、PR、完整 diff 和指定提交的检查数据，确认 Issue 已回填 PR；提出补齐 Issue 链接字段及更新本文记录。Chat 未独立执行本地 `git diff --check`，本地退出码属于 Codex 提交的检查证据。跨任务读取接口仍返回正文引用占位符，因此不能声称无人值守回传已验证。
+- 2026-10-10 经用户明确授权后，已安装官方 GitHub 应用，且仅选择演示仓库。普通 Chat 随后通过连接器成功创建[日常流程测试 Issue #3](https://github.com/yujiacheng671/chat-codex-handoff-demo-20261009/issues/3)，Codex 也成功通过连接器发布模板修订。读取、创建 Issue、分支文件写入与普通 Chat 审阅已分别验证；原生 Issue 触发和无人值守返回仍须单独验证。
 - 本次不配置 CI，文档验收采用差异格式和精确文件范围检查；没有 CI 不等于 CI 通过。保持 `main` 不变，不合并、不部署、不运行交易、不访问密钥。
 
 ## 一次任务的流程
 
 1. Chat 把最终决定、修改范围、验收要求写成一个 Issue。先搜索同一任务是否已存在，存在则续用，避免重复创建。只记录必要上下文，不上传完整聊天记录、账户数据或密钥。普通 Chat 是否有创建 Issue 的工具，须在该会话中验证。
-2. 使用已验证的执行入口启动 Codex。如果没有自动入口，在 Codex 发送一句“执行这个 Issue：〈链接〉，完成验证并开草稿 PR，不合并、不部署”。只传链接，无需复制讨论。创建 Issue、加标签或分配负责人均不等于已启动。
+2. 仓库接入 Codex 后，可测试在 Issue 评论“@codex 请按本 Issue 和 AGENTS.md 实施，验证后提供草稿 PR，不合并、不部署”。必须读到实际任务与交付，才能将其记为已验证入口。若不可用，在 Codex 发送一句“执行这个 Issue：〈链接〉，完成验证并开草稿 PR，不合并、不部署”。只传链接，无需复制讨论。创建 Issue、加标签或分配负责人均不等于已启动。
 3. Codex 读取 Issue 和现有 AGENTS.md，检查工作区及相关自动化，创建独立分支。先复用现有检查，再做范围内最小改动；不修改交易策略、数据、配置或基础设施，除非该次任务明确要求并授权。首次演示只增加文档。
 4. Codex 开草稿 PR，正文写“Refs #〈Issue编号〉”，附验收结果、实际运行的命令、退出结果、相关提交 SHA、未运行的检查及原因。把 PR 链接回填 Issue。不得自动合并或部署。
 5. Chat 读取 Issue、PR 元数据、完整变更清单和 diff，再核对提交 SHA 对应的检查结果。输出“通过 / 需修改 / 证据不足”，引用具体文件或检查。PR 作者自述不等于已验证；没有 CI 也不等于 CI 通过。如果检查不到，明确标记。
@@ -46,6 +48,7 @@ Work 和 Codex 共享额度。具体用量依套餐、模型、上下文与执�
 ## 官方资料与触发边界
 
 - [GitHub 集成](https://learn.chatgpt.com/docs/third-party/github)：PR 中的 `@codex review` 用于审阅；其他 PR 评论中的 Codex 请求可启动云端工作。这不是 Issue 自动执行的验证。
+- [官方更新记录](https://learn.chatgpt.com/docs/changelog)：2025-10-22 已说明 GitHub Issue 支持 `@codex` 启动任务。官方支持不等于当前账号已经配置或本仓库已经实测成功。
 - [非交互执行](https://learn.chatgpt.com/docs/non-interactive-mode)：可用于已有本地 Codex 环境，但需要实际登录、仓库访问和运行条件。
 - [Codex GitHub Action](https://learn.chatgpt.com/docs/github-action)：需要 API key；本最小方案不配置它。
 - [额度说明](https://learn.chatgpt.com/docs/pricing)：Work 与 Codex 共用额度。
